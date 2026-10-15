@@ -6,7 +6,7 @@ Aplicació Node.js/Express per gestionar equips Pokémon amb autenticació JWT. 
 
 ```bash
 npm install
-npm start        # http://localhost:3000
+npm run dev        # http://localhost:3000
 ```
 
 Usuaris d'exemple:
