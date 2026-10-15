@@ -58,11 +58,11 @@ Content-Type: application/json
 
 {"username": "nou_usuari", "password": "secret123", "role": "user"}
 
-### Modificar usuari
+### Modificar qualsevol usuari (admin)
 PUT {{host}}/users/2
 Content-Type: application/json
 
-{"password": "Kilian123"}
+{"password": "Kilian123", "role": "user"}
 
 ### Eliminar usuari (només admin, elimina també els seus equips)
 DELETE {{host}}/users/3
@@ -75,7 +75,7 @@ GET {{host}}/pokemonsTeams
 ### Un equip
 GET {{host}}/pokemonsTeams/1
 
-### Equip privat d'un altre usuari → 403
+### Equip privat d'un altre usuari (admin) → 200
 GET {{host}}/pokemonsTeams/2
 
 ### Crear equip
@@ -124,14 +124,35 @@ Content-Type: application/json
   {"name": "pikachu", "ability": "static", "moves": ["thunderbolt"], "nature": "timid"}
 ]}
 
-### Modificar equip (només propietari)
-PUT {{host}}/pokemonsTeams/1
+### Modificar equip d'un altre usuari (admin) → 200
+PUT {{host}}/pokemonsTeams/2
 Content-Type: application/json
 
-{"team_name": "Equip foc editat", "status": "private"}
+{"team_name": "Equip admin editat", "status": "private"}
 
-### Eliminar equip (propietari o admin)
-DELETE {{host}}/pokemonsTeams/3
+### Login com a usuari normal per provar permisos
+POST {{host}}/login
+Content-Type: application/json
+
+{"username": "Kilian2", "password": "Kilian123"}
+
+### Modificar un altre usuari sense ser admin → 403
+PUT {{host}}/users/1
+Content-Type: application/json
+
+{"username": "no_permes"}
+
+### Veure l'equip privat d'un altre usuari sense ser admin → 403
+GET {{host}}/pokemonsTeams/2
+
+### Tornar a iniciar sessió com a admin per a l'eliminació
+POST {{host}}/login
+Content-Type: application/json
+
+{"username": "Kilian", "password": "Kilian123"}
+
+### Eliminar equip (propietari o admin; usa un id de prova)
+DELETE {{host}}/pokemonsTeams/2
 
 ### ---------- LOGOUT ----------
 

@@ -4,6 +4,9 @@
     <a href="/protected">Zona privada</a>
     <a href="/teams">Equips</a>
     <a href="/profile">Perfil</a>
+    <% if (user.role === "admin") { %>
+      <a href="/admin/users">Usuaris</a>
+    <% } %>
     <form class="inline" method="post" action="/logout"><button>Sortir</button></form>
   <% } else { %>
     <a href="/login">Iniciar sessió</a>

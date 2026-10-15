@@ -52,10 +52,10 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const current = readTeams().find((item) => item.id === Number(req.params.id));
   if (!current) return res.status(404).json({ error: "Equip no trobat" });
-  if (!isOwner(current, req.session.user))
+  if (!isOwner(current, req.session.user) && req.session.user.role !== "admin")
     return res
       .status(403)
-      .json({ error: "Només el propietari pot editar l'equip" });
+      .json({ error: "Només el propietari o un admin pot editar l'equip" });
   try {
     const data = await buildTeam(req.body ?? {}, req.session.user, current);
     // Es torna a llegir per no perdre canvis fets mentre es consultava PokéAPI

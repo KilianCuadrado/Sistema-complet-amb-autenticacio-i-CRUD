@@ -14,7 +14,7 @@
         <h1>Zona privada</h1>
         <p>Benvingut, <strong><%= user.username %></strong> (<%= user.role %>).</p>
 
-        <h2>Els meus equips (<%= myTeams.length %>)</h2>
+        <h2><%= user.role === "admin" ? "Tots els equips" : "Els meus equips" %> (<%= myTeams.length %>)</h2>
         <% if (myTeams.length === 0) { %>
             <p>Encara no tens cap equip.</p>
         <% } %>
@@ -22,6 +22,9 @@
             <% myTeams.forEach((team) => { %>
                 <li>
                     <strong><%= team.team_name %></strong> <span class="small">(<%= team.status %>)</span><br>
+                    <% if (user.role === "admin") { %>
+                        <span class="small">de <%= team.owner %></span><br>
+                    <% } %>
                     <% team.pokemons.forEach((pokemon) => { %>
                         <img class="mini" src="<%= pokemon.image %>" alt="<%= pokemon.name %>" title="<%= pokemon.name %>">
                     <% }) %><br>

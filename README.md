@@ -47,10 +47,11 @@ requests.http          Proves amb REST Client
 | `/register` | públic | Formulari de registre (en crear el compte es neteja i redirigeix a `/login`) |
 | `/protected` | autenticat | Zona privada amb els meus equips |
 | `/profile` | autenticat | Dades de l'usuari |
-| `/teams` | autenticat | Equips públics i els propis |
+| `/admin/users` | admin | Gestionar usuaris |
+| `/teams` | autenticat | Equips públics i els propis; l'admin pot veure'ls tots |
 | `/teams/new` | autenticat | Crear equip |
 | `/teams/:id` | autenticat | Detall d'un equip |
-| `/teams/:id/edit` | propietari | Editar equip |
+| `/teams/:id/edit` | propietari o admin | Editar equip |
 
 ### API
 
@@ -65,7 +66,7 @@ requests.http          Proves amb REST Client
 | DELETE | `/users/:id` | admin | Eliminar usuari i els seus equips |
 | GET | `/pokemonsTeams`, `/pokemonsTeams/:id` | autenticat | Equips visibles |
 | POST | `/pokemonsTeams` | autenticat | Crear equip |
-| PUT | `/pokemonsTeams/:id` | propietari | Modificar equip |
+| PUT | `/pokemonsTeams/:id` | propietari o admin | Modificar equip |
 | DELETE | `/pokemonsTeams/:id` | propietari o admin | Eliminar equip |
 | GET | `/pokeapi/pokemon` | autenticat | Llista de noms de Pokémon |
 | GET | `/pokeapi/pokemon/:name` | autenticat | Tipus, imatge, habilitats i moviments |
@@ -103,7 +104,7 @@ El client només envia el nom i la configuració; el servidor afegeix `pokemon_i
 
 ## Regles de negoci
 
-- **Rols**: l'admin pot crear/eliminar usuaris, canviar rols i eliminar qualsevol equip.
+- **Rols**: l'admin pot crear, modificar i eliminar usuaris, canviar rols i modificar o eliminar qualsevol equip.
 - **Visibilitat**: els equips `private` només els veu el propietari (i l'admin).
 - **Equips**: d'1 a 6 Pokémon, sense repetir Pokémon; màxim 10 equips per usuari; no es pot repetir el nom d'equip per al mateix usuari.
 - **Validació amb PokéAPI**: el Pokémon ha d'existir, l'habilitat ha de ser seva, 1–4 moviments que pugui aprendre (sense repetir), naturalesa vàlida i objecte equipable.
@@ -112,4 +113,11 @@ El client només envia el nom i la configuració; el servidor afegeix `pokemon_i
 
 ## Proves
 
-Obre `requests.http` amb l'extensió REST Client de VS Code i executa les peticions en ordre (inclou casos d'error: 400, 401, 403, 409).
+Obre `requests.http` amb l'extensió REST Client de VS Code i executa les peticions en ordre (inclou casos d'error: 400, 401, 403, 409). Per a la gestió visual d'usuaris, inicia sessió com a admin i obre `/admin/users`.
+
+## Compliment de l'activitat
+
+- Autenticació amb registre, login, logout, JWT d'una hora, bcrypt i cookie `httpOnly`.
+- Dos CRUD REST complets: `/users` i `/pokemonsTeams`, amb validacions i rols.
+- Interfície EJS per a autenticació, perfil, equips i gestió d'usuaris per a l'admin.
+- `requests.http` inclou casos correctes i errors `400`, `401`, `403` i `409`.

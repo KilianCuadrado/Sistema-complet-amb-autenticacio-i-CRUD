@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestió d'usuaris</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card wide">
+        <%- include('partials/nav', { user }) %>
+        <h1>Gestió d'usuaris</h1>
+        <p class="small">Crea, modifica o elimina usuaris. Les contrasenyes no es mostren.</p>
+
+        <form id="new-user-form">
+            <h2>Crear usuari</h2>
+            <label>Nom d'usuari <input name="username" required minlength="3" maxlength="30" pattern="[a-zA-Z0-9_-]+"></label>
+            <label>Contrasenya <input name="password" type="password" required minlength="6"></label>
+            <label>Rol
+                <select name="role">
+                    <option value="user">user</option>
+                    <option value="admin">admin</option>
+                </select>
+            </label>
+            <button type="submit">Crear usuari</button>
+        </form>
+
+        <p id="message" role="status"></p>
+        <section id="users" aria-live="polite"></section>
+    </main>
+    <script src="/admin-users.js"></script>
+</body>
+
+</html>
