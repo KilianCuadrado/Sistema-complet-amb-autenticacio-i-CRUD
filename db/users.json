@@ -1,0 +1,16 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "Kilian",
+      "password": "$2b$12$nKvdEUvmkteLtA2Jmmx1S.fCLsfbYeqiwrKe1rs5VRj7vqViq54A.",
+      "role": "admin"
+    },
+    {
+      "id": 2,
+      "username": "Kilian2",
+      "password": "$2b$12$r00TYl9NmXIj4pmGYISaXOfUsjWAdf7RIe7TuDEFdC93y94NrZPiy",
+      "role": "user"
+    }
+  ]
+}

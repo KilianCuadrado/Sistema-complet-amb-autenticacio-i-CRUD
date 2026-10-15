@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= team ? "Editar equip" : "Crear equip" %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card wide">
+        <%- include('partials/nav', { user }) %>
+        <h1><%= team ? "Editar equip" : "Crear equip" %></h1>
+        <p class="small">Omple entre 1 i 6 Pokémon. Les habilitats i moviments venen de PokéAPI.</p>
+
+        <form id="team-form">
+            <label>Nom de l'equip <input name="team_name" required maxlength="50" value="<%= team ? team.team_name : '' %>"></label>
+            <label>Visibilitat
+                <select name="status">
+                    <option value="private" <%= team && team.status === "private" ? "selected" : "" %>>Privat</option>
+                    <option value="public" <%= team && team.status === "public" ? "selected" : "" %>>Públic</option>
+                </select>
+            </label>
+
+            <% for (let i = 0; i < 6; i++) { %>
+                <fieldset class="slot">
+                    <legend>Pokémon <%= i + 1 %></legend>
+                    <img class="sprite" alt="" hidden>
+                    <label>Nom <input name="name" list="pokemon-list" placeholder="ex: pikachu" autocomplete="off"></label>
+                    <p class="info small"></p>
+                    <label>Habilitat <select name="ability"></select></label>
+                    <label>Moviments
+                        <% for (let m = 0; m < 4; m++) { %><select name="move"></select><% } %>
+                    </label>
+                    <label>Naturalesa <select name="nature"></select></label>
+                    <label>Objecte <input name="item" list="item-list" placeholder="opcional" autocomplete="off"></label>
+                    <div class="evs">
+                        <% stats.forEach((stat) => { %>
+                            <label><%= stat %> <input type="number" name="ev-<%= stat %>" min="0" max="252" step="1" value="0"></label>
+                        <% }) %>
+                    </div>
+                    <p class="small ev-total">EVs: 0 / 510</p>
+                </fieldset>
+            <% } %>
+
+            <button>Guardar</button>
+        </form>
+        <p id="message" class="error"></p>
+
+        <datalist id="pokemon-list"></datalist>
+        <datalist id="item-list"></datalist>
+    </main>
+
+    <script>
+        const saved = <%- JSON.stringify(team).replace(/</g, "\\u003c") %>;
+        const stats = <%- JSON.stringify(stats) %>;
+        const form = document.querySelector("#team-form");
+        const message = document.querySelector("#message");
+        const slots = [...document.querySelectorAll(".slot")];
+
+        const getJson = (url) => fetch(url).then((response) => response.json());
+
+        function fill(select, options, value, emptyLabel = "—") {
+            select.innerHTML = "";
+            select.add(new Option(emptyLabel, ""));
+            options.forEach((option) => select.add(new Option(option, option)));
+            if (value) select.value = value;
+        }
+
+        // Carrega habilitats i moviments del Pokémon escrit
+        async function loadPokemon(slot, data = {}) {
+            const name = slot.querySelector("[name=name]").value.trim().toLowerCase();
+            const ability = slot.querySelector("[name=ability]");
+            const moves = slot.querySelectorAll("[name=move]");
+            const img = slot.querySelector("img");
+            const info = slot.querySelector(".info");
+            fill(ability, []);
+            moves.forEach((move) => fill(move, []));
+            img.hidden = true;
+            info.textContent = "";
+            if (!name) return;
+
+            const response = await fetch(`/pokeapi/pokemon/${encodeURIComponent(name)}`);
+            const pokemon = await response.json();
+            if (!response.ok) return (info.textContent = pokemon.error);
+
+            img.src = pokemon.image;
+            img.hidden = false;
+            info.textContent = `#${pokemon.pokemon_id} · ${pokemon.types.join(" / ")}`;
+            fill(ability, pokemon.abilities, data.ability || pokemon.abilities[0]);
+            moves.forEach((move, i) => fill(move, pokemon.moves, data.moves?.[i]));
+        }
+
+        // Límits d'EVs: màx. 252 per estadística i 510 en total per Pokémon
+        const EV_MAX = 252;
+        const EV_TOTAL = 510;
+        const evInputs = (slot) => [...slot.querySelectorAll(".evs input")];
+        const evSum = (inputs) => inputs.reduce((sum, input) => sum + (Number(input.value) || 0), 0);
+
+        function updateEvs(slot) {
+            const inputs = evInputs(slot);
+            const total = evSum(inputs);
+            // El max de cada camp és el que queda lliure + el seu valor actual
+            inputs.forEach((input) => {
+                input.max = Math.min(EV_MAX, EV_TOTAL - total + (Number(input.value) || 0));
+            });
+            slot.querySelector(".ev-total").classList.toggle("error", total > EV_TOTAL);
+            slot.querySelector(".ev-total").textContent = `EVs: ${total} / ${EV_TOTAL} (queden ${EV_TOTAL - total})`;
+        }
+
+        function limitEv(slot, input) {
+            if (input.value !== "") {
+                const others = evSum(evInputs(slot).filter((item) => item !== input));
+                let value = Math.floor(Number(input.value) || 0);
+                value = Math.max(0, Math.min(value, EV_MAX, EV_TOTAL - others));
+                if (String(value) !== input.value) input.value = value;
+            }
+            updateEvs(slot);
+        }
+
+        slots.forEach((slot) => {
+            evInputs(slot).forEach((input) => {
+                input.oninput = () => limitEv(slot, input);
+                input.onchange = () => {
+                    if (input.value === "") input.value = 0;
+                    limitEv(slot, input);
+                };
+            });
+            updateEvs(slot);
+        });
+
+        async function init() {
+            const [names, natures, items] = await Promise.all([
+                getJson("/pokeapi/pokemon"),
+                getJson("/pokeapi/natures"),
+                getJson("/pokeapi/items"),
+            ]);
+            document.querySelector("#pokemon-list").innerHTML = names.map((n) => `<option value="${n}">`).join("");
+            document.querySelector("#item-list").innerHTML = items.map((n) => `<option value="${n}">`).join("");
+
+            slots.forEach((slot, i) => {
+                const pokemon = saved?.pokemons[i];
+                fill(slot.querySelector("[name=nature]"), natures, pokemon?.nature);
+                slot.querySelector("[name=name]").onchange = () => loadPokemon(slot);
+                if (!pokemon) return;
+                slot.querySelector("[name=name]").value = pokemon.name;
+                slot.querySelector("[name=item]").value = pokemon.item;
+                stats.forEach((stat) => (slot.querySelector(`[name=ev-${stat}]`).value = pokemon.evs[stat]));
+                updateEvs(slot);
+                loadPokemon(slot, pokemon);
+            });
+        }
+
+        form.onsubmit = async (event) => {
+            event.preventDefault();
+            message.textContent = "";
+            const pokemons = [];
+
+            for (const slot of slots) {
+                const name = slot.querySelector("[name=name]").value.trim();
+                if (!name) continue;
+
+                const evs = Object.fromEntries(
+                    stats.map((stat) => [
+                        stat,
+                        Number(slot.querySelector(`[name=ev-${stat}]`).value || 0),
+                    ]),
+                );
+                const total = Object.values(evs).reduce((sum, value) => sum + value, 0);
+                const invalidStat = Object.entries(evs).find(
+                    ([, value]) => !Number.isInteger(value) || value < 0 || value > EV_MAX,
+                );
+
+                if (invalidStat || total > EV_TOTAL) {
+                    message.textContent = invalidStat
+                        ? `Cada EV de ${name} ha d'estar entre 0 i ${EV_MAX}.`
+                        : `Els EVs de ${name} no poden superar ${EV_TOTAL} en total.`;
+                    slot.querySelector(".ev-total").classList.add("error");
+                    return;
+                }
+
+                pokemons.push({
+                    name: name.toLowerCase(),
+                    ability: slot.querySelector("[name=ability]").value,
+                    moves: [...slot.querySelectorAll("[name=move]")].map((s) => s.value).filter(Boolean),
+                    nature: slot.querySelector("[name=nature]").value,
+                    item: slot.querySelector("[name=item]").value.trim(),
+                    evs,
+                });
+            }
+
+            const response = await fetch(saved ? `/pokemonsTeams/${saved.id}` : "/pokemonsTeams", {
+                method: saved ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ team_name: form.elements.team_name.value, status: form.elements.status.value, pokemons }),
+            });
+            const data = await response.json();
+            if (!response.ok) return (message.textContent = data.error);
+            location.href = `/teams/${data.id}`;
+        };
+
+        init();
+    </script>
+</body>
+
+</html>

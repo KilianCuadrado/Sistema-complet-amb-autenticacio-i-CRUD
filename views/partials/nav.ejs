@@ -1,0 +1,12 @@
+<nav>
+  <a href="/">Inici</a>
+  <% if (user) { %>
+    <a href="/protected">Zona privada</a>
+    <a href="/teams">Equips</a>
+    <a href="/profile">Perfil</a>
+    <form class="inline" method="post" action="/logout"><button>Sortir</button></form>
+  <% } else { %>
+    <a href="/login">Iniciar sessió</a>
+    <a href="/register">Registre</a>
+  <% } %>
+</nav>

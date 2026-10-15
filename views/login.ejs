@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iniciar sessió</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <main class="card">
+    <%- include('partials/nav', { user }) %>
+    <h1>Iniciar sessió</h1>
+    <% if (registered) { %>
+      <p class="ok">Compte creat, ja pots iniciar sessió.</p>
+    <% } %>
+    <form id="login">
+      <label>Usuari <input name="username" required minlength="3" autocomplete="username" /></label>
+      <label>Contrasenya <input name="password" type="password" required minlength="6" autocomplete="current-password" /></label>
+      <button>Entrar</button>
+    </form>
+    <p id="message" class="error"></p>
+    <p>No tens compte? <a href="/register">Registra't</a></p>
+  </main>
+  <script>
+    const form = document.querySelector("#login");
+    const message = document.querySelector("#message");
+    form.onsubmit = async (event) => {
+      event.preventDefault();
+      message.textContent = "";
+      const response = await fetch("/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (response.ok) return (location.href = "/protected");
+      const data = await response.json();
+      message.textContent = data.error;
+      form.password.value = "";
+    };
+  </script>
+</body>
+
+</html>

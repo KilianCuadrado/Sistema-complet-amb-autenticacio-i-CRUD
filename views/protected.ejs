@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Zona privada</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card">
+        <%- include('partials/nav', { user }) %>
+        <h1>Zona privada</h1>
+        <p>Benvingut, <strong><%= user.username %></strong> (<%= user.role %>).</p>
+
+        <h2>Els meus equips (<%= myTeams.length %>)</h2>
+        <% if (myTeams.length === 0) { %>
+            <p>Encara no tens cap equip.</p>
+        <% } %>
+        <ul class="teams">
+            <% myTeams.forEach((team) => { %>
+                <li>
+                    <strong><%= team.team_name %></strong> <span class="small">(<%= team.status %>)</span><br>
+                    <% team.pokemons.forEach((pokemon) => { %>
+                        <img class="mini" src="<%= pokemon.image %>" alt="<%= pokemon.name %>" title="<%= pokemon.name %>">
+                    <% }) %><br>
+                    <a href="/teams/<%= team.id %>">Veure</a> ·
+                    <a href="/teams/<%= team.id %>/edit">Editar</a> ·
+                    <button class="link" data-delete="<%= team.id %>">Eliminar</button>
+                </li>
+            <% }) %>
+        </ul>
+        <a class="button" href="/teams/new">Crear equip</a>
+        <a href="/teams">Veure equips públics</a>
+    </main>
+    <script src="/delete-team.js"></script>
+</body>
+
+</html>

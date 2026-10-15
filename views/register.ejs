@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registre</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body>
+  <main class="card">
+    <%- include('partials/nav', { user }) %>
+    <h1>Crear compte</h1>
+    <form id="register">
+      <label>Usuari <input name="username" required minlength="3" maxlength="30" autocomplete="username" /></label>
+      <label>Contrasenya <input name="password" type="password" required minlength="6" autocomplete="new-password" /></label>
+      <button>Crear compte</button>
+    </form>
+    <p id="message" class="error"></p>
+    <p>Ja tens compte? <a href="/login">Inicia sessió</a></p>
+  </main>
+  <script>
+    const form = document.querySelector("#register");
+    const message = document.querySelector("#message");
+    form.onsubmit = async (event) => {
+      event.preventDefault();
+      message.textContent = "";
+      const response = await fetch("/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form))),
+      });
+      if (response.ok) {
+        form.reset();
+        return location.replace("/login?registered=1");
+      }
+      const data = await response.json();
+      message.textContent = data.error;
+      form.password.value = "";
+    };
+  </script>
+</body>
+
+</html>

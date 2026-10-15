@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Perfil</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card">
+        <%- include('partials/nav', { user }) %>
+        <h1>Perfil</h1>
+        <p>ID: <%= user.id %></p>
+        <p>Usuari: <strong><%= user.username %></strong></p>
+        <p>Rol: <%= user.role %></p>
+        <p>Equips creats: <%= teamCount %></p>
+        <a href="/protected">Tornar</a>
+    </main>
+</body>
+
+</html>

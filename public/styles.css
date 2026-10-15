@@ -1,0 +1,114 @@
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font:
+    16px system-ui,
+    sans-serif;
+  background: #f1f5f9;
+  color: #172033;
+}
+.card {
+  width: min(92%, 560px);
+  margin: 8vh auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px #0001;
+}
+.card.wide {
+  width: min(92%, 760px);
+  margin-top: 3vh;
+}
+label {
+  display: block;
+  margin: 1rem 0;
+}
+input,
+select {
+  display: block;
+  width: 100%;
+  padding: 0.65rem;
+  margin-top: 0.35rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+}
+button,
+.button {
+  display: inline-block;
+  border: 0;
+  border-radius: 6px;
+  padding: 0.7rem 1rem;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+button:hover,
+.button:hover {
+  background: #1d4ed8;
+}
+hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid #e2e8f0;
+}
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+nav button {
+  padding: 0.3rem 0.7rem;
+}
+.inline {
+  display: inline;
+  margin: 0;
+}
+button.link {
+  padding: 0;
+  background: none;
+  color: #dc2626;
+  text-decoration: underline;
+}
+fieldset {
+  margin: 1rem 0;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+.evs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0 0.5rem;
+}
+.evs label {
+  margin: 0.4rem 0;
+  font-size: 0.85rem;
+}
+.sprite {
+  float: right;
+  width: 96px;
+}
+.mini {
+  width: 48px;
+}
+.teams {
+  padding-left: 1rem;
+}
+.teams li {
+  margin-bottom: 1rem;
+}
+.small {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+.error {
+  color: #dc2626;
+}
+.ok {
+  color: #16a34a;
+}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Equips</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card">
+        <%- include('partials/nav', { user }) %>
+        <h1>Equips</h1>
+        <p class="small">Equips públics.</p>
+        <% if (teams.length === 0) { %>
+            <p>No hi ha equips.</p>
+        <% } %>
+        <ul class="teams">
+            <% teams.forEach((team) => { %>
+                <li>
+                    <a href="/teams/<%= team.id %>"><strong><%= team.team_name %></strong></a>
+                    <span class="small">de <%= team.owner %> (<%= team.status %>)</span><br>
+                    <% team.pokemons.forEach((pokemon) => { %>
+                        <img class="mini" src="<%= pokemon.image %>" alt="<%= pokemon.name %>" title="<%= pokemon.name %>">
+                    <% }) %>
+                </li>
+            <% }) %>
+        </ul>
+    </main>
+</body>
+
+</html>

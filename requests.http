@@ -1,0 +1,142 @@
+### Proves amb REST Client (VS Code). La cookie "token" es guarda automàticament després del login.
+@host = http://localhost:3000
+
+### ---------- AUTENTICACIÓ ----------
+
+### Registre
+POST {{host}}/register
+Content-Type: application/json
+
+{"username": "alumne", "password": "password123"}
+
+### Registre duplicat → 409
+POST {{host}}/register
+Content-Type: application/json
+
+{"username": "alumne", "password": "password123"}
+
+### Registre invàlid → 400
+POST {{host}}/register
+Content-Type: application/json
+
+{"username": "a", "password": "123"}
+
+### Login incorrecte → 401
+POST {{host}}/login
+Content-Type: application/json
+
+{"username": "Kilian", "password": "malament"}
+
+### Login (admin d'exemple) → guarda la cookie token
+POST {{host}}/login
+Content-Type: application/json
+
+{"username": "Kilian", "password": "Kilian123"}
+
+### ---------- POKÉAPI ----------
+
+### Dades d'un Pokémon (habilitats i moviments disponibles)
+GET {{host}}/pokeapi/pokemon/charizard
+
+### Naturaleses
+GET {{host}}/pokeapi/natures
+
+### Objectes equipables
+GET {{host}}/pokeapi/items
+
+### ---------- CRUD USUARIS ----------
+
+### Llistar usuaris
+GET {{host}}/users
+
+### Un usuari
+GET {{host}}/users/1
+
+### Crear usuari (només admin)
+POST {{host}}/users
+Content-Type: application/json
+
+{"username": "nou_usuari", "password": "secret123", "role": "user"}
+
+### Modificar usuari
+PUT {{host}}/users/2
+Content-Type: application/json
+
+{"password": "Kilian123"}
+
+### Eliminar usuari (només admin, elimina també els seus equips)
+DELETE {{host}}/users/3
+
+### ---------- CRUD EQUIPS ----------
+
+### Llistar equips visibles
+GET {{host}}/pokemonsTeams
+
+### Un equip
+GET {{host}}/pokemonsTeams/1
+
+### Equip privat d'un altre usuari → 403
+GET {{host}}/pokemonsTeams/2
+
+### Crear equip
+POST {{host}}/pokemonsTeams
+Content-Type: application/json
+
+{
+  "team_name": "Equip prova",
+  "status": "public",
+  "pokemons": [
+    {
+      "name": "pikachu",
+      "ability": "static",
+      "moves": ["thunderbolt", "quick-attack"],
+      "nature": "timid",
+      "item": "light-ball",
+      "evs": {"hp": 0, "attack": 0, "defense": 4, "special-attack": 252, "special-defense": 0, "speed": 252}
+    }
+  ]
+}
+
+### Habilitat que el Pokémon no té → 400
+POST {{host}}/pokemonsTeams
+Content-Type: application/json
+
+{"team_name": "Error habilitat", "pokemons": [{"name": "pikachu", "ability": "blaze", "moves": ["thunderbolt"], "nature": "timid"}]}
+
+### Moviment que el Pokémon no pot aprendre → 400
+POST {{host}}/pokemonsTeams
+Content-Type: application/json
+
+{"team_name": "Error moviment", "pokemons": [{"name": "pikachu", "ability": "static", "moves": ["flamethrower", "surf", "hydro-pump"], "nature": "timid"}]}
+
+### EVs per sobre de 510 → 400
+POST {{host}}/pokemonsTeams
+Content-Type: application/json
+
+{"team_name": "Error EVs", "pokemons": [{"name": "pikachu", "ability": "static", "moves": ["thunderbolt"], "nature": "timid", "evs": {"hp": 252, "attack": 252, "speed": 252}}]}
+
+### Pokémon repetit → 400
+POST {{host}}/pokemonsTeams
+Content-Type: application/json
+
+{"team_name": "Error repetit", "pokemons": [
+  {"name": "pikachu", "ability": "static", "moves": ["thunderbolt"], "nature": "timid"},
+  {"name": "pikachu", "ability": "static", "moves": ["thunderbolt"], "nature": "timid"}
+]}
+
+### Modificar equip (només propietari)
+PUT {{host}}/pokemonsTeams/1
+Content-Type: application/json
+
+{"team_name": "Equip foc editat", "status": "private"}
+
+### Eliminar equip (propietari o admin)
+DELETE {{host}}/pokemonsTeams/3
+
+### ---------- LOGOUT ----------
+
+### Logout
+POST {{host}}/logout
+
+### Sense cookie → 401
+GET {{host}}/pokemonsTeams

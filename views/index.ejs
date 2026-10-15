@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pokémon Teams</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card">
+        <%- include('partials/nav', { user }) %>
+        <h1>Pokémon Teams</h1>
+        <p>Crea i gestiona equips Pokémon amb dades de PokéAPI.</p>
+        <% if (user) { %>
+            <p>Hola, <strong><%= user.username %></strong>.</p>
+            <a class="button" href="/protected">Zona privada</a>
+        <% } else { %>
+            <a class="button" href="/login">Iniciar sessió</a>
+            <a href="/register">Crear compte</a>
+        <% } %>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="ca">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><%= team.team_name %></title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+
+<body>
+    <main class="card wide">
+        <%- include('partials/nav', { user }) %>
+        <h1><%= team.team_name %></h1>
+        <p class="small">De <%= team.owner %> · <%= team.status %></p>
+
+        <% team.pokemons.forEach((pokemon) => { %>
+            <fieldset>
+                <legend>#<%= pokemon.pokemon_id %> <%= pokemon.name %></legend>
+                <img class="sprite" src="<%= pokemon.image %>" alt="<%= pokemon.name %>">
+                <p>Tipus: <%= pokemon.types.join(" / ") %></p>
+                <p>Habilitat: <%= pokemon.ability %></p>
+                <p>Moviments: <%= pokemon.moves.join(", ") %></p>
+                <p>Naturalesa: <%= pokemon.nature %> · Objecte: <%= pokemon.item || "cap" %></p>
+                <p class="small">EVs: <%= stats.map((stat) => `${stat} ${pokemon.evs[stat]}`).join(" / ") %></p>
+            </fieldset>
+        <% }) %>
+
+        <% if (team.owner_id === user.id) { %>
+            <a class="button" href="/teams/<%= team.id %>/edit">Editar</a>
+        <% } %>
+        <% if (team.owner_id === user.id || user.role === "admin") { %>
+            <button data-delete="<%= team.id %>">Eliminar</button>
+        <% } %>
+    </main>
+    <script src="/delete-team.js"></script>
+</body>
+
+</html>

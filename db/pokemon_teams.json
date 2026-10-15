@@ -1,0 +1,225 @@
+{
+  "pokemon_teams": [
+    {
+      "id": 1,
+      "owner_id": 1,
+      "team_name": "Equip foc",
+      "status": "public",
+      "pokemons": [
+        {
+          "name": "charizard",
+          "pokemon_id": "006",
+          "types": [
+            "fire",
+            "flying"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+          "ability": "blaze",
+          "moves": [
+            "flamethrower",
+            "air-slash",
+            "dragon-pulse",
+            "roost"
+          ],
+          "nature": "timid",
+          "item": "charcoal",
+          "evs": {
+            "hp": 4,
+            "attack": 0,
+            "defense": 0,
+            "special-attack": 252,
+            "special-defense": 0,
+            "speed": 252
+          }
+        },
+        {
+          "name": "blastoise",
+          "pokemon_id": "009",
+          "types": [
+            "water"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png",
+          "ability": "torrent",
+          "moves": [
+            "surf",
+            "ice-beam",
+            "rapid-spin",
+            "protect"
+          ],
+          "nature": "bold",
+          "item": "leftovers",
+          "evs": {
+            "hp": 252,
+            "attack": 0,
+            "defense": 252,
+            "special-attack": 0,
+            "special-defense": 4,
+            "speed": 0
+          }
+        },
+        {
+          "name": "venusaur",
+          "pokemon_id": "003",
+          "types": [
+            "grass",
+            "poison"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+          "ability": "overgrow",
+          "moves": [
+            "giga-drain",
+            "sludge-bomb",
+            "sleep-powder",
+            "leech-seed"
+          ],
+          "nature": "modest",
+          "item": "black-sludge",
+          "evs": {
+            "hp": 252,
+            "attack": 0,
+            "defense": 0,
+            "special-attack": 252,
+            "special-defense": 4,
+            "speed": 0
+          }
+        },
+        {
+          "name": "pikachu",
+          "pokemon_id": "025",
+          "types": [
+            "electric"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/25.png",
+          "ability": "static",
+          "moves": [
+            "thunderbolt",
+            "volt-switch",
+            "grass-knot",
+            "protect"
+          ],
+          "nature": "timid",
+          "item": "light-ball",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 4,
+            "special-attack": 252,
+            "special-defense": 0,
+            "speed": 252
+          }
+        },
+        {
+          "name": "gengar",
+          "pokemon_id": "094",
+          "types": [
+            "ghost",
+            "poison"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/94.png",
+          "ability": "cursed-body",
+          "moves": [
+            "shadow-ball",
+            "sludge-bomb",
+            "thunderbolt",
+            "protect"
+          ],
+          "nature": "timid",
+          "item": "",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 4,
+            "special-attack": 252,
+            "special-defense": 0,
+            "speed": 252
+          }
+        },
+        {
+          "name": "snorlax",
+          "pokemon_id": "143",
+          "types": [
+            "normal"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/143.png",
+          "ability": "thick-fat",
+          "moves": [
+            "body-slam",
+            "earthquake",
+            "rest",
+            "sleep-talk"
+          ],
+          "nature": "careful",
+          "item": "leftovers",
+          "evs": {
+            "hp": 252,
+            "attack": 4,
+            "defense": 0,
+            "special-attack": 0,
+            "special-defense": 252,
+            "speed": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "owner_id": 2,
+      "team_name": "Equip privat",
+      "status": "private",
+      "pokemons": [
+        {
+          "name": "lucario",
+          "pokemon_id": "448",
+          "types": [
+            "fighting",
+            "steel"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/448.png",
+          "ability": "inner-focus",
+          "moves": [
+            "aura-sphere",
+            "flash-cannon",
+            "nasty-plot",
+            "vacuum-wave"
+          ],
+          "nature": "timid",
+          "item": "life-orb",
+          "evs": {
+            "hp": 0,
+            "attack": 0,
+            "defense": 4,
+            "special-attack": 252,
+            "special-defense": 0,
+            "speed": 252
+          }
+        },
+        {
+          "name": "garchomp",
+          "pokemon_id": "445",
+          "types": [
+            "dragon",
+            "ground"
+          ],
+          "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/445.png",
+          "ability": "rough-skin",
+          "moves": [
+            "earthquake",
+            "dragon-claw",
+            "swords-dance",
+            "stone-edge"
+          ],
+          "nature": "jolly",
+          "item": "",
+          "evs": {
+            "hp": 4,
+            "attack": 252,
+            "defense": 0,
+            "special-attack": 0,
+            "special-defense": 0,
+            "speed": 252
+          }
+        }
+      ]
+    }
+  ]
+}
