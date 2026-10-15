@@ -14,7 +14,7 @@ Usuaris d'exemple:
 | Usuari | Contrasenya | Rol |
 | --- | --- | --- |
 | `Kilian` | `Kilian123` | admin |
-| `Kilian2` | — | user |
+| `Kilian2` | 123456 | user |
 
 Variable opcional: `JWT_SECRET` (si no es defineix s'usa una clau per defecte).
 
